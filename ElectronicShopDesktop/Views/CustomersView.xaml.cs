@@ -1,13 +1,12 @@
 ﻿using System.Windows.Controls;
-
 namespace ElectronicShop.App.Views
 {
     /// <summary>
-    /// Interaction logic for Sidebar.xaml
+    /// Interaction logic for CustomersView.xaml
     /// </summary>
-    public partial class Sidebar : UserControl
+    public partial class CustomersView : UserControl
     {
-        public Sidebar()
+        public CustomersView()
         {
             InitializeComponent();
         }

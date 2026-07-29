@@ -3,11 +3,11 @@
 namespace ElectronicShop.App.Views
 {
     /// <summary>
-    /// Interaction logic for Sidebar.xaml
+    /// Interaction logic for BillingView.xaml
     /// </summary>
-    public partial class Sidebar : UserControl
+    public partial class BillingView : UserControl
     {
-        public Sidebar()
+        public BillingView()
         {
             InitializeComponent();
         }

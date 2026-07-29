@@ -1,12 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ElectronicShop.App.ViewModels.Base;
 
 namespace ElectronicShop.App.Navigation
 {
-    public class NavigationItem
+    public class NavigationItem : ViewModelBase
     {
+        public string Title { get; }
+        public Type ViewModelType { get; }
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set => SetProperty(ref _isSelected, value);
+        }
+
+        public NavigationItem(string title, Type viewModelType)
+        {
+            Title = title;
+            ViewModelType = viewModelType;
+        }
     }
 }

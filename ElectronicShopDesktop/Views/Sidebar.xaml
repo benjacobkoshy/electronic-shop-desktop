@@ -4,11 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ElectronicShop.App.Views"
+             xmlns:p="clr-namespace:ElectronicShop.App.Localisation"
              mc:Ignorable="d" d:DesignWidth="240"
              Width="240">
     <Border Background="{DynamicResource SideNavBackgroundBrush}">
         <DockPanel>
-            <TextBlock DockPanel.Dock="Top" Text="⚡ ElecShop"
+            <TextBlock DockPanel.Dock="Top" Text="{x:Static p:Strings.ES_APP_NAME}"
                        Style="{StaticResource LogoTextStyle}"
                        Margin="24,24,0,32"/>
             <ItemsControl ItemsSource="{Binding NavigationItems}">

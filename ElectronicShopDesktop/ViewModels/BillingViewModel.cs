@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ElectronicShop.App.ViewModels.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ElectronicShop.App.ViewModels
 {
-    public class BillingViewModel
+    public class BillingViewModel : ViewModelBase
     {
     }
 }

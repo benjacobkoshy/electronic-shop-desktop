@@ -3,11 +3,11 @@
 namespace ElectronicShop.App.Views
 {
     /// <summary>
-    /// Interaction logic for Sidebar.xaml
+    /// Interaction logic for InventoryView.xaml
     /// </summary>
-    public partial class Sidebar : UserControl
+    public partial class InventoryView : UserControl
     {
-        public Sidebar()
+        public InventoryView()
         {
             InitializeComponent();
         }

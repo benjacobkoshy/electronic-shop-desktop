@@ -2,6 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ElectronicShop.App"
+             xmlns:vm="clr-namespace:ElectronicShop.App.ViewModels"
+             xmlns:views="clr-namespace:ElectronicShop.App.Views"
+             xmlns:converters="clr-namespace:ElectronicShop.App.Converters"
              Startup="ApplicationStartup"
              ShutdownMode="OnLastWindowClose">
     <Application.Resources>
@@ -9,11 +12,28 @@
             <ResourceDictionary.MergedDictionaries>
                 <!-- Default theme — ThemeManager replaces this entry at runtime -->
                 <ResourceDictionary Source="Resources/Themes/LightTheme.xaml"/>
-
                 <ResourceDictionary Source="Resources/Styles/Typography.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Buttons.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/NavStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/Cards.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <converters:StringToBrushKeyConverter x:Key="BrushKeyConverter"/>
+
+            <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
+                <views:DashboardView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:InventoryViewModel}">
+                <views:InventoryView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:BillingViewModel}">
+                <views:BillingView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:CustomersViewModel}">
+                <views:CustomersView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+                <views:SettingsView/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

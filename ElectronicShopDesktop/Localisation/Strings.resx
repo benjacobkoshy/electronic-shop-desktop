@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ES_APP_NAME" xml:space="preserve">
+    <value>⚡ ElecShop</value>
+  </data>
+  <data name="ES_APP_TITLE" xml:space="preserve">
+    <value>ElecShop</value>
+  </data>
   <data name="ES_BTN_CANCEL" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -126,7 +132,7 @@
   <data name="ES_LABEL_BILLING" xml:space="preserve">
     <value>Billing</value>
   </data>
-  <data name="ES_LABEL_CUSTOMER" xml:space="preserve">
+  <data name="ES_LABEL_CUSTOMERS" xml:space="preserve">
     <value>Customers</value>
   </data>
   <data name="ES_LABEL_DASHBOARD" xml:space="preserve">

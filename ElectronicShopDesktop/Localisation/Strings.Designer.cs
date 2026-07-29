@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ElectronicShop.App.Localizaztion {
+namespace ElectronicShop.App.Localisation {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ElectronicShop.App.Localizaztion {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ElectronicShop.App.Localizaztion.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ElectronicShop.App.Localisation.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,24 @@ namespace ElectronicShop.App.Localizaztion {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⚡ ElecShop.
+        /// </summary>
+        public static string ES_APP_NAME {
+            get {
+                return ResourceManager.GetString("ES_APP_NAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ElecShop.
+        /// </summary>
+        public static string ES_APP_TITLE {
+            get {
+                return ResourceManager.GetString("ES_APP_TITLE", resourceCulture);
             }
         }
         
@@ -90,9 +108,9 @@ namespace ElectronicShop.App.Localizaztion {
         /// <summary>
         ///   Looks up a localized string similar to Customers.
         /// </summary>
-        public static string ES_LABEL_CUSTOMER {
+        public static string ES_LABEL_CUSTOMERS {
             get {
-                return ResourceManager.GetString("ES_LABEL_CUSTOMER", resourceCulture);
+                return ResourceManager.GetString("ES_LABEL_CUSTOMERS", resourceCulture);
             }
         }
         

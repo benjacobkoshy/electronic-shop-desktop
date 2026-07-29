@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ElectronicShop.App.ViewModels.Base;
 
 namespace ElectronicShop.App.Navigation
 {
-    public class INavigationService
+    public interface INavigationService
     {
+        ViewModelBase CurrentViewModel { get; }
+        event Action CurrentViewModelChanged;
+        void NavigateTo(Type viewModelType);
+        void NavigateTo<T>() where T : ViewModelBase;
     }
 }
