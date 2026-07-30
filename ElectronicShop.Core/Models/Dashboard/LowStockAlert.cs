@@ -8,7 +8,7 @@ namespace ElectronicShop.Core.Models.Dashboard
 {
     public class LowStockAlert
     {
-        public string ProductName { get; set; }
+        public string ProductName { get; set; } = string.Empty;
         public int RemainingQty { get; set; }
         public int ThresholdQty { get; set; }
     }

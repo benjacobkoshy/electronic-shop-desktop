@@ -8,10 +8,10 @@ namespace ElectronicShop.Core.Models.Dashboard
 {
     public class RecentBillSummary
     {
-        public string BillNumber { get; set; }
-        public string CustomerName { get; set; }
+        public string BillNumber { get; set; } = string.Empty;
+        public string CustomerName { get; set; } = string.Empty;
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
-        public string Status { get; set; } // "Paid", "Pending"
+        public string Status { get; set; } = string.Empty; // "Paid", "Pending"
     }
 }

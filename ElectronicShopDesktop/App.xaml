@@ -16,8 +16,10 @@
                 <ResourceDictionary Source="Resources/Styles/Buttons.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/NavStyles.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Cards.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/Inputs.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:StringToBrushKeyConverter x:Key="BrushKeyConverter"/>
+            <converters:StockStatusToBrushConverter x:Key="StockStatusBrushConverter"/>
 
             <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
                 <views:DashboardView/>
