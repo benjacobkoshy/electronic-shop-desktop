@@ -1,60 +1,110 @@
-﻿using ElectronicShop.App.ViewModels.Base;
-using ElectronicShop.Core.Models.Dashboard;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using ElectronicShop.Core.Models.Dashboard;
+using ElectronicShop.App.ViewModels.Base;
+using ElectronicShop.Core.Repositories;
 
 namespace ElectronicShop.App.ViewModels
 {
     public class DashboardViewModel : ViewModelBase
     {
-        public string WelcomeMessage => $"Welcome back — here's what's happening today";
+        private readonly IStockRepository _stockRepository;
+        private readonly IBillingRepository _billingRepository;
+        private readonly ICustomerRepository _customerRepository;
+
+        public string WelcomeMessage => "Welcome back — here's what's happening today";
         public string TodayDate => DateTime.Now.ToString("dddd, dd MMMM yyyy");
 
-        public ObservableCollection<DashboardStat> Stats { get; }
-        public ObservableCollection<RecentBillSummary> RecentBills { get; }
-        public ObservableCollection<LowStockAlert> LowStockAlerts { get; }
-        public ObservableCollection<CustomerStatusSummary> CustomerStatusBreakdown { get; }
+        public ObservableCollection<DashboardStat> Stats { get; } = new();
+        public ObservableCollection<RecentBillSummary> RecentBills { get; } = new();
+        public ObservableCollection<LowStockAlert> LowStockAlerts { get; } = new();
+        public ObservableCollection<CustomerStatusSummary> CustomerStatusBreakdown { get; } = new();
 
-        public DashboardViewModel()
+        private bool _isLoading;
+        public bool IsLoading
         {
-            Stats = new ObservableCollection<DashboardStat>
-            {
-                new() { Label = "Today's Sales", Value = "₹ 12,450", Icon = "💰", AccentBrushKey = "PrimaryBrush" },
-                new() { Label = "Bills Today", Value = "18", Icon = "🧾", AccentBrushKey = "AccentBrush" },
-                new() { Label = "Low Stock Items", Value = "5", Icon = "⚠️", AccentBrushKey = "DangerBrush" },
-                new() { Label = "Active Customers", Value = "9", Icon = "👥", AccentBrushKey = "PrimaryBrush" },
-            };
-
-            RecentBills = new ObservableCollection<RecentBillSummary>
-            {
-                new() { BillNumber = "INV-1042", CustomerName = "Ravi Kumar", Amount = 1250, Date = DateTime.Today, Status = "Paid" },
-                new() { BillNumber = "INV-1041", CustomerName = "Anjali Menon", Amount = 3400, Date = DateTime.Today, Status = "Pending" },
-                new() { BillNumber = "INV-1040", CustomerName = "Suresh Nair", Amount = 800, Date = DateTime.Today.AddDays(-1), Status = "Paid" },
-                new() { BillNumber = "INV-1039", CustomerName = "Priya Das", Amount = 2100, Date = DateTime.Today.AddDays(-1), Status = "Paid" },
-            };
-
-            LowStockAlerts = new ObservableCollection<LowStockAlert>
-            {
-                new() { ProductName = "Capacitor 470µF", RemainingQty = 4, ThresholdQty = 10 },
-                new() { ProductName = "IC LM7805", RemainingQty = 2, ThresholdQty = 15 },
-                new() { ProductName = "USB-C Connector", RemainingQty = 6, ThresholdQty = 20 },
-            };
-
-            CustomerStatusBreakdown = new ObservableCollection<CustomerStatusSummary>
-            {
-                new() { Status = "In Progress", Count = 6, BrushKey = "PrimaryBrush" },
-                new() { Status = "Waiting for Stock", Count = 3, BrushKey = "DangerBrush" },
-                new() { Status = "Resolved", Count = 14, BrushKey = "AccentBrush" },
-            };
+            get => _isLoading;
+            set => SetProperty(ref _isLoading, value);
         }
 
-        public override void OnNavigatedTo()
+        public DashboardViewModel(
+            IStockRepository stockRepository,
+            IBillingRepository billingRepository,
+            ICustomerRepository customerRepository)
         {
-            //base.OnNavigatedTo();
+            _stockRepository = stockRepository;
+            _billingRepository = billingRepository;
+            _customerRepository = customerRepository;
+        }
+
+        public override void OnNavigatedTo() => _ = LoadAsync();
+
+        private async Task LoadAsync()
+        {
+            IsLoading = true;
+            try
+            {
+                var products = await _stockRepository.GetAllAsync();
+                var lowStock = await _stockRepository.GetLowStockAsync();
+                var recentBills = await _billingRepository.GetRecentAsync(4);
+                var tickets = await _customerRepository.GetAllTicketsAsync();
+
+                var todaysBills = recentBills.Where(b => DateTime.Parse(b.BillDate).Date == DateTime.Today).ToList();
+                var todaysSales = todaysBills.Sum(b => b.TotalAmount);
+                var activeCustomerCount = tickets.Count(t => t.Status != "Resolved");
+
+                Stats.Clear();
+                Stats.Add(new DashboardStat { Label = "Today's Sales", Value = $"₹ {todaysSales:N0}", Icon = "💰", AccentBrushKey = "PrimaryBrush" });
+                Stats.Add(new DashboardStat { Label = "Bills Today", Value = todaysBills.Count.ToString(), Icon = "🧾", AccentBrushKey = "AccentBrush" });
+                Stats.Add(new DashboardStat { Label = "Low Stock Items", Value = lowStock.Count.ToString(), Icon = "⚠️", AccentBrushKey = "DangerBrush" });
+                Stats.Add(new DashboardStat { Label = "Active Customers", Value = activeCustomerCount.ToString(), Icon = "👥", AccentBrushKey = "PrimaryBrush" });
+
+                RecentBills.Clear();
+                foreach (var b in recentBills)
+                {
+                    RecentBills.Add(new RecentBillSummary
+                    {
+                        BillNumber = b.BillNumber,
+                        CustomerName = b.Customer?.Name ?? "Walk-in",
+                        Amount = b.TotalAmount,
+                        Date = DateTime.Parse(b.BillDate),
+                        Status = b.PaymentStatus
+                    });
+                }
+
+                LowStockAlerts.Clear();
+                foreach (var p in lowStock)
+                {
+                    LowStockAlerts.Add(new LowStockAlert
+                    {
+                        ProductName = p.Name,
+                        RemainingQty = p.Quantity,
+                        ThresholdQty = p.LowStockThreshold
+                    });
+                }
+
+                CustomerStatusBreakdown.Clear();
+                foreach (var group in tickets.GroupBy(t => t.Status))
+                {
+                    CustomerStatusBreakdown.Add(new CustomerStatusSummary
+                    {
+                        Status = group.Key,
+                        Count = group.Count(),
+                        BrushKey = group.Key switch
+                        {
+                            "Resolved" => "AccentBrush",
+                            "WaitingForStock" => "DangerBrush",
+                            _ => "PrimaryBrush"
+                        }
+                    });
+                }
+            }
+            finally
+            {
+                IsLoading = false;
+            }
         }
     }
 }

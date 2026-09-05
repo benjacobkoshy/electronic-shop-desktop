@@ -20,6 +20,7 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:StringToBrushKeyConverter x:Key="BrushKeyConverter"/>
             <converters:StockStatusToBrushConverter x:Key="StockStatusBrushConverter"/>
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
 
             <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
                 <views:DashboardView/>

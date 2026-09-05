@@ -1,18 +1,18 @@
-﻿using ElectronicShop.App.Models.Inventory;
-using ElectronicShop.App.ViewModels.Base;
+﻿using ElectronicShop.App.ViewModels.Base;
+using CoreModels = ElectronicShop.Core.Models;
 
 namespace ElectronicShop.App.ViewModels
 {
     public class StockItemViewModel : ViewModelBase
     {
-        private readonly StockItem _model;
+        private readonly CoreModels.Product _model;
 
-        public StockItemViewModel(StockItem model) => _model = model;
+        public StockItemViewModel(CoreModels.Product model) => _model = model;
 
-        public string Id => _model.Id;
+        public int Id => _model.Id;
         public string Name => _model.Name;
-        public string Category => _model.Category;
         public string Sku => _model.Sku;
+        public string Category => _model.Category?.Name ?? "Uncategorized";
         public decimal UnitPrice => _model.UnitPrice;
         public int LowStockThreshold => _model.LowStockThreshold;
 
@@ -33,6 +33,6 @@ namespace ElectronicShop.App.ViewModels
             Quantity <= LowStockThreshold ? "Low Stock" : "In Stock";
 
         // Exposes the underlying domain model for save operations
-        public StockItem ToModel() => _model;
+        public CoreModels.Product ToModel() => _model;
     }
 }

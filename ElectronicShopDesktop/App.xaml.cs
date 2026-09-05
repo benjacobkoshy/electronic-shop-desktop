@@ -1,7 +1,8 @@
 ﻿using Autofac;
 using ElectronicShop.App.ViewModels.Base;
-using System.Configuration;
-using System.Data;
+using ElectronicShop.Core.Models;
+using ElectronicShop.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Windows;
 using static ElectronicShop.App.ViewModels.Base.ThemeManager;
 
@@ -32,8 +33,30 @@ namespace ElectronicShop.App
         {
             var bootstrapper = new Bootstrapper.Bootstrapper();
             _container = bootstrapper.Bootstrap();
-
             ThemeManager.ApplyTheme(AppTheme.Light);
+
+            try
+            {
+                using (var scope = _container.BeginLifetimeScope())
+                {
+                    var db = scope.Resolve<ShopDbContext>();
+                    db.Database.Migrate();
+
+                    if (!db.ShopSettings.Any())
+                    {
+                        db.ShopSettings.Add(new ShopSettings { ShopName = "My Electronics Shop", CurrencySymbol = "₹" });
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Failed to initialize the application database:\n{ex.Message}",
+                    "Startup Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown();
+                return;
+            }
 
             var mainWindow = _container.Resolve<MainWindow>();
             mainWindow.Show();
