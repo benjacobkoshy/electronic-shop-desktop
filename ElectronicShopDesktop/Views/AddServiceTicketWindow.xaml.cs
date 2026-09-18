@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ElectronicShop.App.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,11 @@ namespace ElectronicShop.App.Views
         public AddServiceTicketWindow()
         {
             InitializeComponent();
+            Loaded += (_, _) =>
+            {
+                if (DataContext is AddServiceTicketViewModel vm)
+                    vm.RequestClose += () => DialogResult = vm.DialogResult;
+            };
         }
     }
 }
